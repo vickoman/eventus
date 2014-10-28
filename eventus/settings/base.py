@@ -1,6 +1,6 @@
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-import os
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+from unipath import Path 
+BASE_DIR = Path(__file__).ancestor(3)
 
 
 # Quick-start development settings - unsuitable for production
@@ -30,7 +30,8 @@ DJANGO_APPS = (
 
 #Aplicaciones locales
 LOCAL_APPS = (
-        'apps.events',        
+        'apps.events',
+        'apps.users',        
     )
 
 
@@ -65,3 +66,5 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+AUTH_USER_MODEL = 'users.User'
