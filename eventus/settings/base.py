@@ -36,7 +36,8 @@ LOCAL_APPS = (
 
 
 #Aplicaciones de terceros
-THIRD_PARTY_APPS = (        
+THIRD_PARTY_APPS = (    
+        'geoposition',    
     )
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_PARTY_APPS
 
@@ -57,7 +58,7 @@ WSGI_APPLICATION = 'eventus.wsgi.application'
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-ES'
 
 TIME_ZONE = 'UTC'
 

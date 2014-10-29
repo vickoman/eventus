@@ -1,11 +1,12 @@
 from django.db import models
 from django.template.defaultfilters import slugify
 from django.conf import settings
+from geoposition.fields import GeopositionField
 
 
 class TimeStampModel(models.Model):
     create = models.DateTimeField(auto_now_add=True)
-    modify = models.DateTimeField(auto_now=True)
+    modify = models.DateTimeField(auto_now=True)    
 
     class Meta:
         abstract = True
@@ -13,6 +14,7 @@ class TimeStampModel(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=50)
     slug = models.SlugField(editable=False)
+    imagen = models.ImageField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -22,6 +24,10 @@ class Category(models.Model):
     def __unicode__(self):
         return "%s" % self.name
 
+    class Meta:
+        verbose_name = 'Categoria'
+        verbose_name_plural = 'Categorias'
+
 class Event(TimeStampModel):
     name = models.CharField(max_length=200, unique=True)
     slug = models.SlugField(editable=False)
@@ -29,6 +35,7 @@ class Event(TimeStampModel):
     content = models.TextField()
     Category = models.ForeignKey(Category)
     place = models.CharField(max_length=50)
+    position = GeopositionField(null=True, blank=True)
     start = models.DateTimeField()
     finish = models.DateTimeField()
     imagen = models.ImageField(upload_to='events')
@@ -39,11 +46,15 @@ class Event(TimeStampModel):
 
     def save(self, *args, **kwargs):
         if not self.id:
-            self.slug = slugify(self.name)
+            self.slug = slugify(self.name)        
         super(Event, self).save(*args, **kwargs)        
 
     def __unicode__(self):
         return "%s" % self.name
+
+    class Meta:
+        verbose_name = 'Evento'
+        verbose_name_plural = 'Eventos'
 
 class Assistant(TimeStampModel):
     assistant = models.ForeignKey(settings.AUTH_USER_MODEL)
@@ -54,6 +65,10 @@ class Assistant(TimeStampModel):
     def __unicode__(self):
         return "%s %s" % (self.assistant.username, self.event.name)
 
+    class Meta:
+        verbose_name = 'Asistente'
+        verbose_name_plural = 'Asistentes'
+
 class Comments(TimeStampModel):
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     event = models.ForeignKey(Event)
@@ -61,4 +76,8 @@ class Comments(TimeStampModel):
 
     def __unicode__(self):
         return "%s %s" % (self.user.username, self.event.name)
+
+    class Meta:
+        verbose_name = 'Cometario'
+        verbose_name_plural = 'Comentarios'
 
